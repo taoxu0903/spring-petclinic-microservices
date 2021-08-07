@@ -32,8 +32,16 @@ jobs:
 
     - name: Deploy
       run: |
+      
+        az account set -s f86578d4-0e67-40ef-9073-c43a7ebbb49b  
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
+        
+        az spring-cloud tanzu app create -n <app-name> --assign-endpoint true -o table
+        az spring-cloud tanzu application-configuration-service bind --app <app-name>
+        
+        # configure acs settings with https://github.com/Azure-Samples/spring-petclinic-microservices-config
+        
         az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.3.6.jar --config-file-patterns "customers-service"
         # az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.3.6.jar --config-file-patterns "vets-service"
         # az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.3.6.jar --config-file-patterns "visits-service"
