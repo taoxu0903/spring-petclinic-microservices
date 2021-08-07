@@ -34,7 +34,7 @@ jobs:
       run: |
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
-        az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.5.1.jar --config-file-patterns "customers-service"
-        # az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.5.1.jar --config-file-patterns "vets-service"
-        # az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.5.1.jar --config-file-patterns "visits-service"
-        # az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.5.1.jar --config-file-patterns "api-gateway"
+        az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.3.6.jar --config-file-patterns "customers-service"
+        # az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.3.6.jar --config-file-patterns "vets-service"
+        # az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.3.6.jar --config-file-patterns "visits-service"
+        # az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.3.6.jar --config-file-patterns "api-gateway"
