@@ -2,8 +2,9 @@ name: Deploy to AKS
 on: [workflow_dispatch]
 
 env:
-  GROUP: PetClinic-Dev
-  SERVICE_NAME: petclinic-staging
+  GROUP: tx-rg-aks
+  SERVICE_NAME: taoxu-ask-test
+  CLUSETER_NAME: tx-aks
 
 jobs:
   build-and-deploy:
@@ -26,10 +27,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
-    - name: Install ASC extension
-      run: |
-        az extension add -s https://ascprivatecli.blob.core.windows.net/enterprise/spring_cloud-2.7.0_enterprise-py3-none-any.whl -y
-
     - name: Deploy
       run: |
       
@@ -37,12 +34,5 @@ jobs:
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
         
-        az spring-cloud tanzu app create -n <app-name> --assign-endpoint true -o table
-        az spring-cloud tanzu application-configuration-service bind --app <app-name>
-        
-        # configure acs settings with https://github.com/Azure-Samples/spring-petclinic-microservices-config
-        
-        az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.3.6.jar --config-file-patterns "customers-service"
-        # az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.3.6.jar --config-file-patterns "vets-service"
-        # az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.3.6.jar --config-file-patterns "visits-service"
-        # az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.3.6.jar --config-file-patterns "api-gateway"
+        az group create --name $GROUP --location eastus2
+        az aks create --resource-group $GROUP --name $SERVICE_NAME --node-count 1 --enable-addons monitoring --generate-ssh-keys
