@@ -1,4 +1,4 @@
-name: Deploy to Azure Spring Cloud
+name: Deploy to ASC Enterprise tier
 on: [workflow_dispatch]
 
 env:
