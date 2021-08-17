@@ -41,10 +41,10 @@ jobs:
         az spring-cloud app create --name api-gateway --instance-count 1 --memory 2Gi --assign-endpoint
         az spring-cloud app create --name customers-service --instance-count 1 --memory 2Gi
 
-        az spring-cloud tanzu application-configuration-service bind --app api-gateway
-        az spring-cloud tanzu application-configuration-service bind --app customers-service
-        az spring-cloud tanzu service-registry bind --app api-gateway
-        az spring-cloud tanzu service-registry bind --app customers-service
+        az spring-cloud application-configuration-service bind --app api-gateway
+        az spring-cloud application-configuration-service bind --app customers-service
+        az spring-cloud service-registry bind --app api-gateway
+        az spring-cloud service-registry bind --app customers-service
         
         az spring-cloud application-configuration-service git repo add --label master --name rule1 --patterns "api-gateway,customers-service,vets-service,visits-service" --uri "https://github.com/Azure-Samples/spring-petclinic-microservices-config"
         
