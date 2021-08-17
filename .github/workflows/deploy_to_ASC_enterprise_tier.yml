@@ -2,8 +2,8 @@ name: Deploy to ASC Enterprise tier
 on: [workflow_dispatch]
 
 env:
-  GROUP: PetClinic-Dev
-  SERVICE_NAME: petclinic-staging
+  GROUP: tx-rg
+  SERVICE_NAME: tx-asc
 
 jobs:
   build-and-deploy:
@@ -28,21 +28,26 @@ jobs:
         
     - name: Install ASC extension
       run: |
-        az extension add -s https://ascprivatecli.blob.core.windows.net/enterprise/spring_cloud-2.7.0_enterprise-py3-none-any.whl -y
+        az extension add -s https://ascprivatecli.blob.core.windows.net/enterprise/spring_cloud-2.7.0a1-py3-none-any.whl -y
 
     - name: Deploy
       run: |
       
-        az account set -s f86578d4-0e67-40ef-9073-c43a7ebbb49b  
+        az account set -s 6c933f90-8115-4392-90f2-7077c9fa5dbd  
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
         
-        az spring-cloud tanzu app create -n <app-name> --assign-endpoint true -o table
-        az spring-cloud tanzu application-configuration-service bind --app <app-name>
+        az spring-cloud app create --name api-gateway --instance-count 1 --memory 2Gi --assign-endpoint
+        az spring-cloud app create --name customers-service --instance-count 1 --memory 2Gi
+
+        az spring-cloud tanzu application-configuration-service bind --app api-gateway
+        az spring-cloud tanzu application-configuration-service bind --app customers-service
+        az spring-cloud tanzu service-registry bind --app api-gateway
+        az spring-cloud tanzu service-registry bind --app customers-service
         
-        # configure acs settings with https://github.com/Azure-Samples/spring-petclinic-microservices-config
+        az spring-cloud application-configuration-service git repo add --label master --name rule1 --patterns "api-gateway,customers-service,vets-service,visits-service" --uri "https://github.com/Azure-Samples/spring-petclinic-microservices-config"
         
         az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.3.6.jar --config-file-patterns "customers-service"
         # az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.3.6.jar --config-file-patterns "vets-service"
         # az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.3.6.jar --config-file-patterns "visits-service"
-        # az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.3.6.jar --config-file-patterns "api-gateway"
+        az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.3.6.jar --config-file-patterns "api-gateway"
