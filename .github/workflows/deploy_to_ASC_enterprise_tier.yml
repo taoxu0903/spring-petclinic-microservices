@@ -24,7 +24,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-      # az ad sp create-for-rbac --role contributor --scopes /subscriptions/874f6233-e9b0-4c57-a3bc-2365b7544f2a/resourceGroups/PetClinic-Dev --sdk-auth
+      # az ad sp create-for-rbac --role contributor --scopes /subscriptions/6c933f90-8115-4392-90f2-7077c9fa5dbd --sdk-auth
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
     - name: Install ASC extension
