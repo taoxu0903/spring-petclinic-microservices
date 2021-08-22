@@ -33,7 +33,7 @@ jobs:
 
     - name: Deploy
       run: |
-      
+        # Azure Spring Cloud Prod Test v3 - TTL = 1 Days
         az account set -s 6c933f90-8115-4392-90f2-7077c9fa5dbd  
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME 
