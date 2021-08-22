@@ -13,14 +13,14 @@ jobs:
 
     - uses: actions/checkout@main
 
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
+#     - name: Set up JDK 1.8
+#       uses: actions/setup-java@v1
+#       with:
+#         java-version: 1.8
 
-    - name: maven build, clean
-      run: |
-        mvn clean package -DskipTests
+#     - name: maven build, clean
+#       run: |
+#         mvn clean package -DskipTests
 
     - name: Azure Login
       uses: azure/login@v1
@@ -29,7 +29,6 @@ jobs:
         
     - name: Deploy
       run: |
-      
         az account set -s 6c933f90-8115-4392-90f2-7077c9fa5dbd 
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
