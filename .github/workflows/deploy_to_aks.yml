@@ -30,7 +30,7 @@ jobs:
     - name: Deploy
       run: |
       
-        az account set -s f86578d4-0e67-40ef-9073-c43a7ebbb49b  
+        az account set -s 799c12ba-353c-44a1-883d-84808ebb2216 
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
         
