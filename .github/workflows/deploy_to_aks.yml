@@ -1,16 +1,24 @@
 name: Deploy to AKS
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+      inputs:
+        resource-group:
+          description: 'resource group name'     
+#           required: true
+          default: 'tx-rg-aks'
+        aks-service-name:
+          description: 'Test scenario tags'
+          default: 'tx-aks'
 
 env:
-  GROUP: tx-rg-aks
-  SERVICE_NAME: taoxu-ask-test
+  GROUP: ${{ github.event.inputs.resource-group }}
+  SERVICE_NAME: ${{ github.event.inputs.aks-service-name }}
   CLUSETER_NAME: tx-aks
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-
     - uses: actions/checkout@main
 
 #     - name: Set up JDK 1.8
@@ -29,6 +37,8 @@ jobs:
         
     - name: Deploy
       run: |
+        echo "resource group: ${{ github.event.inputs.resource-group }}"
+        echo "aks service name: ${{ github.event.inputs.aks-service-name }}"
         az account set -s 6c933f90-8115-4392-90f2-7077c9fa5dbd 
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
