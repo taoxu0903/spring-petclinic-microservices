@@ -47,8 +47,25 @@ jobs:
         # Azure Spring Cloud Prod Test v3 - TTL = 1 Days
         az account set -s 6c933f90-8115-4392-90f2-7077c9fa5dbd  
         az config set defaults.group=$GROUP
-        az config set defaults.spring-cloud=$SERVICE_NAME 
+        az config set defaults.spring-cloud=$SERVICE_NAME
         
+        az spring-cloud app create --name api-gateway --instance-count 1 --memory 2Gi --assign-endpoint
+        az spring-cloud app create --name customers-service --instance-count 1 --memory 2Gi
+        az spring-cloud app create --name vets-service --instance-count 1 --memory 2Gi --assign-endpoint
+        az spring-cloud app create --name visits-service --instance-count 1 --memory 2Gi
+
+        az spring-cloud application-configuration-service bind --app api-gateway
+        az spring-cloud application-configuration-service bind --app customers-service
+        az spring-cloud application-configuration-service bind --app vets-service
+        az spring-cloud application-configuration-service bind --app visits-service
+        az spring-cloud service-registry bind --app api-gateway
+        az spring-cloud service-registry bind --app customers-service
+        az spring-cloud service-registry bind --app vets-service
+        az spring-cloud service-registry bind --app visits-service
         
+        az spring-cloud application-configuration-service git repo add --label master --name rule1 --patterns "api-gateway,customers-service,vets-service,visits-service" --uri "https://github.com/Azure-Samples/spring-petclinic-microservices-config"
+        
+        az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.3.6.jar --config-file-patterns "api-gateway"
+        az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.3.6.jar --config-file-patterns "customers-service"  
         az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.3.6.jar --config-file-patterns "vets-service"
         az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.3.6.jar --config-file-patterns "visits-service"
