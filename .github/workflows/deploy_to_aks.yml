@@ -21,11 +21,11 @@ jobs:
 #     - name: maven build, clean
 #       run: |
 #         mvn clean package -DskipTests
-
+# "Azure Spring Cloud Prod Test v3 - TTL = 1 Days" - 6c933f90-8115-4392-90f2-7077c9fa5dbd
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS_AKS }}
         
     - name: Deploy
       run: |
