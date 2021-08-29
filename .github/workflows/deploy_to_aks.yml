@@ -7,7 +7,7 @@ on:
 #           required: true
           default: 'tx-rg-aks'
         aks-service-name:
-          description: 'Test scenario tags'
+          description: 'aks service name'
           default: 'tx-aks'
 
 env:
