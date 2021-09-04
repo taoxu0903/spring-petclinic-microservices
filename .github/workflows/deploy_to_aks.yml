@@ -43,7 +43,8 @@ jobs:
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
         
-        if ${{az group exists}} == false then
+        echo ::set-env name=RG_EXIST::$(az group exists)
+        if ${{env.RG_EXIST}} == false then
              echo "resource group $GROUP already exists."
           else
              az group create --name $GROUP --location eastus2
