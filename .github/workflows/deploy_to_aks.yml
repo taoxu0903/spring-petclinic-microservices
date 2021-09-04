@@ -42,7 +42,8 @@ jobs:
         az account set -s 6c933f90-8115-4392-90f2-7077c9fa5dbd 
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
-        
-        if !$(az group exists) az group create --name $GROUP --location eastus2
+        echo "RG Exist:$(az group exists)"
+        if !$(az group exists) then
+          az group create --name $GROUP --location eastus2
         
         az aks create --resource-group $GROUP --name $SERVICE_NAME --node-count 1 --enable-addons monitoring --generate-ssh-keys
