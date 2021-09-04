@@ -45,5 +45,5 @@ jobs:
         echo "RG Exist:$(az group exists)"
         if !$(az group exists) then
           az group create --name $GROUP --location eastus2
-        
+        fi
         az aks create --resource-group $GROUP --name $SERVICE_NAME --node-count 1 --enable-addons monitoring --generate-ssh-keys
