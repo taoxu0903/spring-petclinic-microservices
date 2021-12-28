@@ -1,9 +1,18 @@
 name: Deploy to ASC Std tier
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+      inputs:
+        resource-group:
+          description: 'resource group name'     
+#           required: true
+          default: 'tx-rg'
+        service-name:
+          description: 'asc service name'
+          default: 'tx-asc-test'
 
 env:
-  GROUP: taoxu-rg
-  SERVICE_NAME: taoxu-asc-demo
+  GROUP: ${{ github.event.inputs.resource-group }}
+  SERVICE_NAME: ${{ github.event.inputs.service-name }}
 
 jobs:
   build-and-deploy:
@@ -24,7 +33,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-       # az ad sp create-for-rbac --role contributor --scopes /subscriptions/874f6233-e9b0-4c57-a3bc-2365b7544f2a/resourceGroups/PetClinic-Dev --sdk-auth
+       # az ad sp create-for-rbac --role contributor --scopes /subscriptions/6c933f90-8115-4392-90f2-7077c9fa5dbd --sdk-auth
         creds: ${{ secrets.AZURE_CREDENTIALS_B }} 
         
     - name: Install ASC extension
@@ -38,7 +47,7 @@ jobs:
         az config set defaults.group=$GROUP
         az config set defaults.spring-cloud=$SERVICE_NAME
         # az group create -g "$GROUP" -l eastus2
-        # az spring-cloud create -g "$GROUP" -n "$SERVICE_NAME" --sku standard
+        az spring-cloud create -g "$GROUP" -n "$SERVICE_NAME" --sku standard -l eastus2
         az spring-cloud config-server git set -n $SERVICE_NAME -g $GROUP --uri https://github.com/azure-samples/spring-petclinic-microservices-config --label main
      
     - name: Create apps
