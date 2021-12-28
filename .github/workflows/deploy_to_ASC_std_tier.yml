@@ -59,7 +59,7 @@ jobs:
 
     - name: Deploy apps
       run: |
-        az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.5.1.jar
-        az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.5.1.jar
-        az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.5.1.jar
-        az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.5.1.jar
+        az spring-cloud app deploy -n customers-service --jar-path ${{ github.workspace }}/spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.3.6.jar
+        az spring-cloud app deploy -n vets-service --jar-path ${{ github.workspace }}/spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.3.6.jar
+        az spring-cloud app deploy -n visits-service --jar-path ${{ github.workspace }}/spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.3.6.jar
+        az spring-cloud app deploy -n api-gateway --jar-path ${{ github.workspace }}/spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.3.6.jar
