@@ -48,7 +48,7 @@ jobs:
         az config set defaults.spring-cloud=$SERVICE_NAME
         # az group create -g "$GROUP" -l eastus2
         # az spring-cloud create -g "$GROUP" -n "$SERVICE_NAME" --sku standard -l eastus2
-        az spring-cloud config-server git set -n $SERVICE_NAME -g $GROUP --uri https://github.com/azure-samples/spring-petclinic-microservices-config --label main
+        az spring-cloud config-server git set -n $SERVICE_NAME -g $GROUP --uri https://github.com/azure-samples/spring-petclinic-microservices-config --label master
      
     - name: Create apps
       run: | 
